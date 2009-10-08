@@ -47,6 +47,12 @@ class xen::host {
     fail ('please reboot on the xen hypervisor before continuing.')
   } else {
 
+    # avoid rebooting on a non-xen kernel
+    package { "kernel":
+      ensure   => absent,
+      provider => "rpm",
+    }
+
     iptables { "allow dns and dhcp on virbr0":
       iniface => "virbr0",
       proto     => "udp",
