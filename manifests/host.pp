@@ -44,7 +44,7 @@ class xen::host {
   }
 
   if $virtual != "xen0" {
-    fail ('please reboot on the xen hypervisor before continuing.')
+    notice ('please reboot on the xen hypervisor before continuing.')
   } else {
 
     # avoid rebooting on a non-xen kernel
