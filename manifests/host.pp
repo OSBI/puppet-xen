@@ -19,7 +19,7 @@ asking you to reboot on a xen kernel.
 
 */
 class xen::host {
-
+  
   package { ["xen", "kernel-xen", "libvirt", "libvirt-python", "python-virtinst", "virt-manager", "virt-viewer", "vnc", "xorg-x11-xauth"]: ensure => present }
 
   # these services must be running
@@ -39,7 +39,7 @@ class xen::host {
   }
 
   # enable packet forwarding
-  sysctl::set_value { "net.ipv4.ip_forward":
+  sysctl::value { "net.ipv4.ip_forward":
     value => "1",
   }
 
