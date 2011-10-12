@@ -23,7 +23,7 @@ class xen::host {
   package { ["xen-linux-system", "xen-qemu-dm-4.0", "libvirt0", "libvirt-bin", "python-libvirt", "virtinst", "virt-manager", "virt-viewer"]: ensure => present }
 
   # these services must be running
-  service { ["xend", "libvirtd-bin"]:
+  service { ["xend", "libvirt-bin"]:
     hasstatus => true,
     ensure    => running,
     enable    => true,
