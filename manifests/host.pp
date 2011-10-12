@@ -20,14 +20,14 @@ asking you to reboot on a xen kernel.
 */
 class xen::host {
   
-  package { ["xen-linux-system", "xen-qemu-dm-4.0", "libvirt0", "python-libvirt", "virtinst", "virt-manager", "virt-viewer"]: ensure => present }
+  package { ["xen-linux-system", "xen-qemu-dm-4.0", "libvirt0", "libvirt-bin", "python-libvirt", "virtinst", "virt-manager", "virt-viewer"]: ensure => present }
 
   # these services must be running
-  service { ["xend", "libvirtd"]:
+  service { ["xend", "libvirtd-bin"]:
     hasstatus => true,
     ensure    => running,
     enable    => true,
-    require   => [Package["libvirt0"], Package["xen-linux-system"]],
+    require   => [Package["libvirt-bin"], Package["xen-linux-system"]],
   }
 
   # ensure xendomains is enabled at boot, but don't bother ensuring it's
