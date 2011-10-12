@@ -27,7 +27,7 @@ class xen::host {
     hasstatus => true,
     ensure    => running,
     enable    => true,
-    require   => [Package["libvirt0"], Package["xen"]],
+    require   => [Package["libvirt0"], Package["xen-linux-system"]],
   }
 
   # ensure xendomains is enabled at boot, but don't bother ensuring it's
