@@ -35,7 +35,7 @@ class xen::host {
   # guests (and this should be managed by xen::guest).
   service { "xendomains":
     enable    => true,
-    require   => Package["xen"],
+    require   => Package["xen-linux-system"],
   }
 
   # enable packet forwarding
