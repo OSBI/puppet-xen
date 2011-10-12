@@ -67,16 +67,11 @@ on it, with the options needed to install fedora 10 from a kickstart file.
 */
 define xen::guest (
   $ensure='present',
-  $paravirt=true,
-  $lvm=true,
-  $vg='vg0',
   $dir='/srv/xen',
   $disksize='2G',
-  $ram='256',
-  $vcpus='1',
-  $console=true,
-  $net='bridge',
-  $installopts='') {
+  $ram='256M',
+  $vcpus='1'
+  $ipaddr='') {
 
   if $virtual != "xen0" {
     fail ('please reboot on the xen hypervisor before continuing.')
@@ -86,48 +81,13 @@ define xen::guest (
 
     'present', 'running', 'stopped': {
 
-      # create empty disk image if none exists
-      if $lvm == true {
-        $diskfile = "/dev/${vg}/${name}"
-
-        exec { "initialize disk for $name":
-          command => "lvcreate -L $disksize -n $name $vg",
-          creates => $diskfile,
-        }
-      } else {
-        $diskfile = "${dir}/${name}.img"
-
-        exec { "initialize disk for $name":
-          command => "dd if=/dev/zero of=${dir}/${name}.img bs=1 count=${disksize}",
-          creates => $diskfile,
-        }
-      }
-
-      # build argument list passed to virt-install
-      $virtarg = $paravirt ? {
-        true  => '--paravirt',
-        false => '--hvm',
-      }
-
-      $netarg = $net ? {
-        'bridge' => '--network bridge:xenbr0',
-        'nat'    => '--network network:default',
-        'none'   => '--nonetworks',
-        default  => $net,
-      }
-
-      $vncarg = $console ? {
-        true  => '--vnc',
-        false => '--nographics',
-      }
-
-      $virt_install_args = "--force --noreboot --noautoconsole --name $name --file $diskfile --ram $ram --vcpus $vcpus $virtarg $netarg $vncarg $installopts"
+      $virt_install_args = "--force --hostname=$name --size=$disksize --memory=$ram --vcpus=$vcpus --ip=$ipaddr"
 
       # launch virt-install only if guest config file doesn't exist
       exec { "install guest $name":
-        command => "virt-install $virt_install_args",
-        creates => "/etc/xen/$name",
-        require => [Exec["initialize disk for $name"], Class["xen::host"]],
+        command => "xen-create-image $virt_install_args",
+        creates => "/etc/xen/${name}.cfg",
+        require => Class["xen::host"],
         timeout => "0",
       }
 
@@ -145,9 +105,9 @@ define xen::guest (
     		ensure => "directory",
 		}
         # set autostart file
-        file { "/etc/xen/auto/$name":
+        file { "/etc/xen/auto/${name}.cfg":
           ensure => link,
-          target => "/etc/xen/$name",
+          target => "/etc/xen/${name}.cfg",
           require => File["/etc/xen/auto"],
         }
       }
@@ -202,7 +162,7 @@ define xen::guest (
       }
 
       # remove autostart file
-      file { "/etc/xen/auto/$name": ensure => absent }
+      file { "/etc/xen/auto/${name}.cfg": ensure => absent }
 
     }
   }
