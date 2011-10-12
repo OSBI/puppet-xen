@@ -128,7 +128,7 @@ define xen::guest (
         command => "virt-install $virt_install_args",
         creates => "/etc/xen/$name",
         require => [Exec["initialize disk for $name"], Class["xen::host"]],
-        timeout => "-1",
+        timeout => "0",
       }
 
 
