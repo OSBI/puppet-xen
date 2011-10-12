@@ -70,7 +70,7 @@ define xen::guest (
   $dir='/srv/xen',
   $disksize='2G',
   $ram='256M',
-  $vcpus='1'
+  $vcpus='1',
   $ipaddr='') {
 
   if $virtual != "xen0" {
