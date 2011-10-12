@@ -96,7 +96,7 @@ define xen::guest (
 
         # start guest if stopped
         exec { "start guest $name":
-          command => "virsh start $name",
+          command => "xm create /etc/xen/${name}.cfg",
           onlyif  => "virsh dominfo $name | egrep -q '^State:[ \t]+(shut|crash)'",
           require => Exec["install guest $name"],
         }
@@ -110,7 +110,7 @@ define xen::guest (
           target => "/etc/xen/${name}.cfg",
           require => File["/etc/xen/auto"],
         }
-      }
+      }		
 
       if $ensure == 'stopped' {
 
