@@ -95,12 +95,12 @@ define xen::guest (
       if $ensure == 'running' {
 
         # start guest if stopped
-        exec { "start guest $name":
-          command => "xm create /etc/xen/${name}.cfg",
+        #exec { "start guest $name":
+        #  command => "xm create /etc/xen/${name}.cfg",
           ##onlyif  => "virsh dominfo $name | egrep -q '^State:[ \t]+(shut|crash)'",
-          require => Exec["install guest $name"],
-        }
-
+        #  require => Exec["install guest $name"],
+        #}
+		notify { "needs automatic start code": }
 		file { "/etc/xen/auto":
     		ensure => "directory",
 		}
