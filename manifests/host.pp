@@ -20,7 +20,7 @@ asking you to reboot on a xen kernel.
 */
 class xen::host {
   
-  package { ["xen", "kernel-xen", "libvirt", "libvirt-python", "python-virtinst", "virt-manager", "virt-viewer", "vnc", "xorg-x11-xauth"]: ensure => present }
+  package { ["xen", "kernel-xen", "libvirt", "libvirt-python", "python-virtinst", "virt-manager", "virt-viewer"]: ensure => present }
 
   # these services must be running
   service { ["xend", "libvirtd"]:
