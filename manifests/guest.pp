@@ -61,7 +61,7 @@ on it, with the options needed to install fedora 10 from a kickstart file.
     disksize => '20G',
     ram => '2048',
     vcpus => 2,
-    installopts => '--location http://download.fedoraproject.org/pub/fedora/linux/releases/10/Fedora/i386/os/ --extra-args ks=http://www.example.com/kickstart/myserver.cfg',
+    installopts => '--location http://de.archive.ubuntu.com/ubuntu --extra-args ks=http://www.example.com/kickstart/myserver.cfg',
   }
 
 */
@@ -141,10 +141,14 @@ define xen::guest (
           require => Exec["install guest $name"],
         }
 
+		file { "/etc/xen/auto":
+    		ensure => "directory",
+		}
         # set autostart file
         file { "/etc/xen/auto/$name":
           ensure => link,
           target => "/etc/xen/$name",
+          require => File["/etc/xen/auto"],
         }
       }
 
