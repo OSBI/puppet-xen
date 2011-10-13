@@ -100,7 +100,7 @@ define xen::guest (
           ##onlyif  => "virsh dominfo $name | egrep -q '^State:[ \t]+(shut|crash)'",
         #  require => Exec["install guest $name"],
         #}
-		#notify { "needs automatic start code": }
+		notify { "needs automatic start code": }
 		file { "/etc/xen/auto":
     		ensure => "directory",
 		}
