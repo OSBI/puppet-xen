@@ -1,0 +1,11 @@
+name 'Analytical Labs-xen'
+version '1.0'
+
+author 'Tom Barber'
+license ''
+project_page ''
+source ''
+summary ''
+description ''
+dependency 'Analytical Labs/iptables', '==1.0'
+dependency 'Analytical Labs/sysctl', '==1.0'
